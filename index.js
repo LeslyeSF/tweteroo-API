@@ -66,9 +66,10 @@ server.use(cors());
 server.use(express.json());
 
 server.post("/sign-up", (req,res)=>{
-	if(req.body.username !== "" && req.body.avatar !== ""){
+	if(validation(req.body.username) && validation(req.body.avatar)){
 		userLogin.push(req.body);
 		res.status(201).send("ok");
+		console.log("passou");
 	}else{
 		res.status(400).send("Todos os campos são obrigatórios!");
 	}
@@ -100,7 +101,7 @@ server.get("/tweets/:USERNAME",(req,res)=>{
 });
 
 server.post("/tweets", (req, res)=>{
-	if(req.headers.user !== "" && req.body.tweet !== ""){
+	if(validation(req.headers.user) && validation(req.body.tweet)){
 
 		const tweet = {
 			username: req.headers.user,
@@ -119,3 +120,11 @@ server.post("/tweets", (req, res)=>{
 });
 
 server.listen(5000);
+
+function validation(str){
+	if(str === "" || str === undefined || str === null){
+		return false;
+	} else{
+		return true;
+	}
+}
