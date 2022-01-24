@@ -69,7 +69,6 @@ server.post("/sign-up", (req,res)=>{
 	if(validation(req.body.username) && validation(req.body.avatar)){
 		userLogin.push(req.body);
 		res.status(201).send("ok");
-		console.log("passou");
 	}else{
 		res.status(400).send("Todos os campos são obrigatórios!");
 	}
