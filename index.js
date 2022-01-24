@@ -66,8 +66,13 @@ server.use(cors());
 server.use(express.json());
 
 server.post("/sign-up", (req,res)=>{
-  userLogin.push(req.body);
-	res.status(201).send("ok");
+	if(req.body.username !== "" && req.body.avatar !== ""){
+		userLogin.push(req.body);
+		res.status(201).send("ok");
+	}else{
+		res.status(400).send("Todos os campos são obrigatórios!");
+	}
+  
 });
 
 server.get("/tweets",(req,res)=>{
@@ -95,15 +100,22 @@ server.get("/tweets/:USERNAME",(req,res)=>{
 });
 
 server.post("/tweets", (req, res)=>{
-  const tweet = {
-    username: req.headers.user,
-    avatar: userLogin[userLogin.length-1].avatar,
-    tweet: req.body.tweet
-  };
+	if(req.headers.user !== "" && req.body.tweet !== ""){
+
+		const tweet = {
+			username: req.headers.user,
+			avatar: userLogin[userLogin.length-1].avatar,
+			tweet: req.body.tweet
+		};
+		
+		tweets.push(tweet);
+		tweetsUser.push(tweet);
+		res.status(201).send("ok");
+
+	} else{
+		res.status(400).send("Todos os campos são obrigatórios!");
+	}
   
-  tweets.push(tweet);
-  tweetsUser.push(tweet);
-	res.status(201).send("ok");
 });
 
 server.listen(5000);
